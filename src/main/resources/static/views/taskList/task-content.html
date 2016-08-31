@@ -1,0 +1,314 @@
+<!-- Page Content -->
+<div id="page-content-wrapper">
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-lg-12">
+			<!-- <h1>Simple Sidebar</h1>
+			<p>This template has a responsive menu toggling system. The menu will appear collapsed on smaller screens, and will appear non-collapsed on larger screens. When toggled using the button below, the menu will appear/disappear. On small screens, the page content will be pushed off canvas.</p>
+			<p>Make sure to keep all page content within the <code>#page-content-wrapper</code>.</p>
+			<a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a> -->
+			
+                        
+
+<div ng-controller="taskController">
+ <script type="text/ng-template" id="group-template.html">
+       <div class="modal-header">
+            <h3 class="modal-title">Fill Order </h3>
+  </div>
+        <div class="modal-body">	
+           <div class="row">
+				<div class="col-md-4">              
+				  Order ID
+				 </div>
+
+				<div class="col-md-4">              
+				  {{order.orderId}}
+				</div>
+           </div>
+		   <div class="row">
+			   <div class="col-md-4">              
+				  Product Type 
+				 </div>
+
+				<div class="col-md-4">              
+				  {{order.productType}}
+				</div>
+           </div>
+		   <div class="row">
+				<div class="col-md-4">              
+				  Amount
+				 </div>
+
+				<div class="col-md-4">              
+				  {{order.amount}}
+				</div>
+           </div>
+		   <div class="row">
+				<div class="col-md-4">              
+				  Quantity
+				 </div>
+
+				<div class="col-md-4">              
+				  {{order.quantity}}
+				</div>
+			</div>
+           <div class="row">
+				<div class="col-md-4">              
+				  Counter Party
+				 </div>
+
+				<div class="col-md-4">              
+				  {{order.counterParty}}
+				</div>
+		  </div>
+		  <div class="row">
+             <div class="col-md-4">              
+              Fill Amount 
+             </div> 
+            <div class="col-md-4">   
+               <input type="text" ng-model="order.fillAmount"/>
+            </div>
+           <div>
+            
+        
+     </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" type="button" ng-click="$close(order)">OK</button>
+            <button class="btn btn-warning" type="button" ng-click="$close()">Cancel</button>
+        </div>
+  </script>
+
+
+<script type="text/ng-template" id="myModalContent.html">
+ <div class="modal-header">
+            <h3 class="modal-title">Assign User</h3>
+        </div>
+        <div class="modal-body">
+
+<select class="user-select" ng-model="selected">
+	<option ng-repeat="user in users" value="{{user.id}}">{{user.username}}</option>
+</select>
+        
+            Selected: <b>{{ selected }}</b>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" type="button" ng-click="ok(selected)">OK</button>
+            <button class="btn btn-warning" type="button" ng-click="$close()">Cancel</button>
+        </div>
+ </script>
+
+
+
+
+					<uib-accordion close-others="oneAtATime" ng-cloak>
+ 
+    <div uib-accordion-group class="panel-default" heading="Pending Task" is-open="true"   ng-show="taskStatus.isPendingTaskExist">
+     
+     <div id="pendingPanel" class="panel"  >    
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Product Type</th>
+                    <th>Amount</th>                   
+                    <th>Qantity</th>
+                    <th>Counter Party</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in pendingTask track by $index">
+                    <td>{{item.orderId}}</td>
+                    <td>{{item.productType}}</td>
+                    <td>{{item.amount}}</td>
+                    <td>{{item.quantity}}</td>
+                    <td>{{item.counterParty}}</td>
+                    <td>{{item.status}}</td>
+                    <td>
+                    	<button class="btn btn-primary" ng-click="approve(item)">Approve</button>
+                        <button class="btn btn-primary"  ng-click="cancel(item)">Cancel</button>
+                    	<button class="btn btn-primary"  ng-click="assign(item)">Assign</button>
+                        <button class="btn btn-primary"  ng-click="reject(item)">Reject</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+      </div>
+    </div>   
+    
+    <div uib-accordion-group class="panel-default" heading="Init Task"  ng-show="taskStatus.isInitTaskExist">
+    
+     <div id="initPanel" class="panel"  >
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Product Type</th>
+                    <th>Amount</th>                   
+                    <th>Qantity</th>
+                    <th>Counter Party</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in initTask track by $index">
+                    <td>{{item.orderId}}</td>
+                    <td>{{item.productType}}</td>
+                    <td>{{item.amount}}</td>
+                    <td>{{item.quantity}}</td>
+                    <td>{{item.counterParty}}</td>
+                    <td>{{item.status}}</td>
+                    <td>
+                    	<button class="btn btn-primary" ng-click="approve(item)">Approve</button>
+                    	<button class="btn btn-primary"  ng-click="assign(item)">Assign</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+      </div>     
+    </div>
+    
+    <div uib-accordion-group class="panel-default" heading="Working Task"  ng-show="taskStatus.isWorkingExist">
+        <div id="workingPanel" class="panel" >
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Product Type</th>
+                    <th>Amount</th>
+                    <th>Qantity</th>
+                    <th>Counter Party</th>
+                    <th>Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in workingTask track by $index">
+                    <td>{{item.orderId}}</td>
+                    <td>{{item.productType}}</td>
+                    <td>{{item.amount}}</td>
+                    <td>{{item.quantity}}</td>
+                    <td>{{item.counterParty}}</td>
+                    <td>{{item.status}}</td>
+                    <td>
+                        <button class="btn btn-primary" ng-click="fill(item)">Approve</button>
+                        <button class="btn btn-primary"  ng-click="assign(item)">Assign</button>
+                        <button class="btn btn-primary"  ng-click="cancel(item)">Cancel</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>    
+    <div uib-accordion-group class="panel-default" heading="Fill Task" ng-show="taskStatus.isFillExist">
+        <div id="FillPanel" class="panel" >
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Product Type</th>
+                    <th>Amount</th>
+                    <th>Qantity</th>
+                    <th>Counter Party</th>
+                    <th>Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in filledTask track by $index">
+                    <td>{{item.orderId}}</td>
+                    <td>{{item.productType}}</td>
+                    <td>{{item.amount}}</td>
+                    <td>{{item.quantity}}</td>
+                    <td>{{item.counterParty}}</td>
+                    <td>{{item.status}}</td>
+                    <td>
+                        <button class="btn btn-primary" ng-click="approve(item)">Approve</button>
+                        <button class="btn btn-primary"  ng-click="assign(item)">Assign</button>
+                        <button class="btn btn-primary"  ng-click="reject(item)">Reject</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+  
+    <div uib-accordion-group class="panel-default" is-open="status.isCustomHeaderOpen" ng-show="taskStatus.isPartialFillExist" >
+      <uib-accordion-heading>
+        Partial Fill<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.isCustomHeaderOpen, 'glyphicon-chevron-right': !status.isCustomHeaderOpen}"></i>
+      </uib-accordion-heading>
+        <div id="partialFillPanel" class="panel">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Product Type</th>
+                    <th>Amount</th>
+                    <th>Qantity</th>
+                    <th>Counter Party</th>
+                    <th>Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in partialFillTask track by $index">
+                    <td>{{item.orderId}}</td>
+                    <td>{{item.productType}}</td>
+                    <td>{{item.amount}}</td>
+                    <td>{{item.quantity}}</td>
+                    <td>{{item.counterParty}}</td>
+                    <td>{{item.status}}</td>
+                    <td>
+                        <button class="btn btn-primary" ng-click="approve(item)">Approve</button>
+                        <button class="btn btn-primary"  ng-click="assign(item)">Assign</button>
+                        <button class="btn btn-primary"  ng-click="reject(item)">Reject</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>   
+ 
+    
+    <div uib-accordion-group class="panel-default" is-open="status.open"  ng-show="taskStatus.isPendingCancelExist">
+      <uib-accordion-heading>
+        Pending Cancel <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+      </uib-accordion-heading>
+        <div id="pendingCancelPanel" class="panel" >
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Product Type</th>
+                    <th>Amount</th>
+                    <th>Qantity</th>
+                    <th>Counter Party</th>
+                    <th>Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in pendingCancelTask track by $index">
+                    <td>{{item.orderId}}</td>
+                    <td>{{item.productType}}</td>
+                    <td>{{item.amount}}</td>
+                    <td>{{item.quantity}}</td>
+                    <td>{{item.counterParty}}</td>
+                    <td>{{item.status}}</td>
+                    <td>
+                        <button class="btn btn-primary" ng-click="approve(item)">Approve</button>
+                        <button class="btn btn-primary"  ng-click="assign(item)">Assign</button>
+                        <button class="btn btn-primary"  ng-click="reject(item)">Reject</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+  </uib-accordion>
+</div>
+
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+</div>

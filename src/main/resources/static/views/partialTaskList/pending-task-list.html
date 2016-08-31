@@ -1,0 +1,28 @@
+<div id="pendingPanel" class="panel" >
+
+{{pendingTask}}
+        <h3 class="panel-header">To Do List</h3>
+    
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Product Type</th>
+                    <th>Amount</th>                   
+                    <th>Qantity</th>
+                    <th>Counter Party</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in pendingTask">
+                    <td>{{item.orderId}}</td>
+                    <td>{{item.productType}}</td>
+                    <td>{{item.amount}}</td>
+                    <td>{{item.quantity}}</td>
+                    <td>{{item.counterParty}}</td>
+                    <td>{{item.status}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>

@@ -1,0 +1,74 @@
+
+
+
+            <div id="signupbox"  >
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <div class="panel-title">Order Details</div>
+                            <div style="float:right; font-size: 85%; position: relative; top:-10px"></div>
+                        </div>  
+                        <div class="panel-body" >
+                            <form id="signupform" class="form-horizontal" role="form">
+                                
+                                <div id="signupalert" style="display:none" class="alert alert-danger">
+                                    <p>Error:</p>
+                                    <span></span>
+                                </div>
+                                  
+                                <div class="form-group">
+                                    <label for="productType" class="col-md-3 control-label" >Product Type</label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control" name="productType" placeholder="Product Type" ng-model="order.productType" >
+                                    </div>
+                                </div>
+                                    
+                                <div class="form-group">
+                                    <label for="isStandAlone" class="col-md-3 control-label">isStandAlone</label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control" name="isStandAlone" placeholder="Stand Alone" ng-model="order.isStandAlone">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="amount" class="col-md-3 control-label">Amount</label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control" name="amount" placeholder="amount" ng-model="order.amount">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Quantity" class="col-md-3 control-label">Quantity</label>
+                                    <div class="col-md-9">
+                                        <input type="quantity" class="form-control" name="quantity" placeholder="Quantity" ng-model="order.quantity">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="counterParty" class="col-md-3 control-label">Counter Party</label>
+                                    <div class="col-md-9">
+                                        <input type="quantity" class="form-control" name="quantity" placeholder="Counter Party" ng-model="order.counterParty">
+                                    </div>
+                                </div>
+                                    
+                                <div class="form-group">
+                                    <label for="costPrice" class="col-md-3 control-label">Cost Price</label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control" name="costPrice" placeholder="costPrice" ng-model="order.costPrice">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">                                                                         
+                                    <div class="col-md-offset-3 col-md-9">
+                                        <button id="btn-signup" type="button" class="btn btn-info" ng-click="sendOrder(order)"><i class="icon-hand-right" ></i> &nbsp Submit</button>                                       
+                                    </div>
+                                </div>                                
+                            </form>
+                         </div>
+                    </div>
+         </div> 
+      
+  
+  
+  
+  
+
+
+  
