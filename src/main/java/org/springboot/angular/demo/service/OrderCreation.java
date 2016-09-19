@@ -5,10 +5,13 @@ import java.util.Random;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.JavaDelegate;
 import org.springboot.angular.demo.domain.Order;
+import org.springframework.stereotype.Service;
+
+import com.fasterxml.jackson.core.sym.Name;
 
 
-
-public class OrderCreation implements JavaDelegate {
+@Service(value ="orderCreation")
+public class OrderCreation {
 	
 	Random random = new Random(100);
 
@@ -44,7 +47,7 @@ public class OrderCreation implements JavaDelegate {
 
 	}
 
-	@Override
+
 	public void execute(DelegateExecution execution) throws Exception {
 		
 		Order order = new Order();

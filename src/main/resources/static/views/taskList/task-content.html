@@ -86,7 +86,7 @@
         <div class="modal-body">
 
 <select class="user-select" ng-model="selected">
-	<option ng-repeat="user in users" value="{{user.id}}">{{user.username}}</option>
+	<option ng-repeat="user in users" value="{{user}}">{{user.userName}}</option>
 </select>
         
             Selected: <b>{{ selected }}</b>
@@ -192,7 +192,7 @@
                     <td>
                         <button class="btn btn-primary" ng-click="fill(item)">Approve</button>
                         <button class="btn btn-primary"  ng-click="assign(item)">Assign</button>
-                        <button class="btn btn-primary"  ng-click="cancel(item)">Cancel</button>
+                        <button class="btn btn-primary"  ng-click="cancelWorking(item)">Cancel</button>
                     </td>
                 </tr>
                 </tbody>

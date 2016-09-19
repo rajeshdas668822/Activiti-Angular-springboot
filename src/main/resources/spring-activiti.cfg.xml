@@ -8,27 +8,10 @@
                            http://www.springframework.org/schema/tx       
                            http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
                            
-     <context:component-scan base-package="com.numerix.oneview"/>
-
-	<bean id="dataSource"
-		class="org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy">
-		<property name="targetDataSource">
-			<bean class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
-				<property name="driverClass" value="org.h2.Driver" />
-				<!-- <property name="url" value="jdbc:h2:mem:activiti;DB_CLOSE_DELAY=1000" /> -->
-				<property name="url" value="jdbc:h2:tcp://localhost/~/test" />
-				
-				<property name="username" value="sa" />
-				<property name="password" value="" />
-			</bean>
-		</property>
-	</bean>
-
-	<bean id="transactionManager"
-		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="dataSource" />
-	</bean>
-	
+    
+    
+    <import resource="classpath*:spring-config.xml"/>
+    	
 	<bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration">
 		<property name="databaseType" value="h2" />
 		<property name="dataSource" ref="dataSource" />
@@ -38,10 +21,19 @@
 		<property name="history" value="full" />
 		<property name="mailServerPort" value="25"/>
 		<property name="createDiagramOnDeploy" value="false" />
-		<property name="deploymentResources" value="classpath*:/diagram/**/*.bpmn" /> 
+		<property name="deploymentResources" value="classpath*:/diagram/orderworkflow/*.bpmn" /> 
         <property name="deploymentMode" value="single-resource" /> 
         
       <!--   <property name="deploymentResources" value="classpath*:/*.xml" /> -->
+     
+	     <property name="customSessionFactories">
+				<list>
+					<bean class="org.springboot.angular.demo.usermanagment.entitymanager.CustomUserEntityManagerFactory">
+						<!-- <property name="userDao" ref="userDao" /> -->
+					</bean>					
+				  <bean class="org.springboot.angular.demo.usermanagment.entitymanager.CustomGroupEntityManagerFactory"/> 		
+				</list>
+	     </property> 
 	</bean>
 	
 	
@@ -68,11 +60,5 @@
 		
 	<bean id="identityService" factory-bean="processEngine"
 		factory-method="getIdentityService" />
-
-	<!-- <bean id="activitiRule" class="org.activiti.engine.test.ActivitiRule">
-		<property name="processEngine" ref="processEngine" />
-	</bean> -->
-
-	
 
 </beans>

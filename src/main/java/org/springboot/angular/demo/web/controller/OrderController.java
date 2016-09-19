@@ -3,6 +3,7 @@ package org.springboot.angular.demo.web.controller;
 import java.util.List;
 import java.util.Map;
 
+import org.springboot.angular.demo.domain.RequestInfo;
 import org.springboot.angular.demo.domain.Order;
 import org.springboot.angular.demo.domain.User;
 import org.springboot.angular.demo.service.WorkFlowService;
@@ -74,11 +75,23 @@ public class OrderController {
 	 }
 	 
 	 
+	 @RequestMapping(value="/cancelWorkingOrder",method = RequestMethod.POST)
+	 @ResponseBody
+     public boolean cancelWorkingOrder(@RequestBody Order order){
+		 
+		 System.out.println("Inside cancelOrder"+order);		 
+		 workFlowService.processFillOrder(order,"Reject");
+		 
+		 return true;
+	 }
+	 
+	 
+	 
 	@RequestMapping(value = "/fillOrder", method = RequestMethod.POST)
 	@ResponseBody
 	public boolean fillOrder(@RequestBody Order order) {
 		System.out.println("Inside cancelOrder" + order.getFillAmount());
-		workFlowService.processFillOrder(order);
+		workFlowService.processFillOrder(order,"");
 		return true;
 	}
 	
@@ -90,9 +103,8 @@ public class OrderController {
 	 
 	 @RequestMapping(value="/assignOrder",method = RequestMethod.POST)
 	 @ResponseBody
-     public boolean assignOrder(@RequestBody String userId){
-		 
-		 System.out.println("Inside Assign"+userId);
+     public boolean assignOrder( @RequestBody RequestInfo requestInfo){		 
+	  System.out.println("Inside Assign"+requestInfo.getUser().getUserName());
 		 
 		 return true;
 	 }

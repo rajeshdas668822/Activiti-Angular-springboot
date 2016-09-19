@@ -10,7 +10,7 @@
 	</appender>
 
 	<root>
-		<priority value="INFO" />
+		<priority value="ALL" />
 		<appender-ref ref="CONSOLE" />
 	</root>
 

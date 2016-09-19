@@ -20,7 +20,7 @@
         <activiti:formProperty id="limitAmount" name="Limitn Amount(Setting)" default="20000"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <userTask id="orderInit" name="Initial" activiti:assignee="kermit">
+    <userTask id="orderInit" name="Initial" activiti:candidateGroups="sales">
       <extensionElements>
         <activiti:formProperty id="orderId" name="Order ID" expression="${order.orderId}" writable="false" required="true"></activiti:formProperty>
         <activiti:formProperty id="productType" name="Product Type" expression="${order.productType}" writable="false" required="true"></activiti:formProperty>
@@ -55,7 +55,7 @@ if(order.isStandalone() &amp;&amp; order.getAmount() &lt; convertedLimitAmount )
 execution.setVariable("isAutoRelease", ""+isAutoRelease);
 out:println "isAutoRelease := " + isAutoRelease;</script>
     </scriptTask>
-    <userTask id="usertask1" name="Pending" activiti:assignee="fozzie">
+    <userTask id="usertask1" name="Pending" activiti:assignee="kermit">
       <extensionElements>
         <activiti:formProperty id="orderId" name="Order ID" expression="${order.orderId}" writable="false" required="true"></activiti:formProperty>
         <activiti:formProperty id="productType" name="Product Type" expression="${order.productType}" writable="false" required="true"></activiti:formProperty>
@@ -203,15 +203,18 @@ out:println "isAutoRelease := " + isAutoRelease;</script>
     </sequenceFlow>
     <scriptTask id="scripttask2" name="Check order Fill?" scriptFormat="groovy" activiti:autoStoreVariables="false">
       <script>out:println "Inside Check order Fill  Script" ;
+org.springboot.angular.demo.domain.Order order =  execution.getVariable("order");
 isFill = false;
 workingOrderAction = "";
 if(pendingCancelAction != null &amp;&amp; pendingCancelAction == "Reject"){
   execution.setVariable("previousAction", "Working Order" );
   workingOrderAction = "Reject";
+  order.setStatus("Cancel");
   execution.setVariable("workingOrderAction","Reject");
+  execution.setVariable("order",order);
 }else{
 def convertedFilledAmount = filledAmount.toLong();
-Order order =  execution.getVariable("order");
+
 if (convertedFilledAmount == order.getAmount()){
 		 execution.setVariable("workingOrderAction","Fill");
 		 workingOrderAction = "Fill";
@@ -228,7 +231,7 @@ out:println "Going out of Fill Script:" + workingOrderAction;</script>
     </scriptTask>
     <sequenceFlow id="flow36" sourceRef="usertask2" targetRef="scripttask2"></sequenceFlow>
     <sequenceFlow id="flow37" sourceRef="scripttask2" targetRef="exclusivegateway3"></sequenceFlow>
-    <serviceTask id="servicetask2" name="create Order" activiti:class="org.springboot.angular.demo.service.OrderCreation"></serviceTask>
+    <serviceTask id="servicetask2" name="create Order" activiti:expression="#{orderCreation.execute(execution)}"></serviceTask>
     <sequenceFlow id="flow40" sourceRef="startevent1" targetRef="servicetask2"></sequenceFlow>
     <sequenceFlow id="flow41" name="to Auto-release?" sourceRef="servicetask2" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow42" sourceRef="scripttask1" targetRef="exclusivegateway1"></sequenceFlow>

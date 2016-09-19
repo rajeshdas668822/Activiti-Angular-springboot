@@ -1,6 +1,7 @@
 app.service("userService", function () {
     	this.user ={
         		userId:'',
+        		userName:'',
         		password:''
         };
     	
@@ -16,6 +17,12 @@ app.service("userService", function () {
     			fillAmount:'0'
     			
     	};
+    	
+    	this.requestinfo={
+    			user: this.user,
+    			order:this.order
+    	};
+    	
     	
     	
         

@@ -35,6 +35,19 @@ public class LoginController {
 		user.setPassword("fozzie");
 		existingUsers.put(user.getUserId(),user);
 		
+		user = new User();
+		user.setUserId("rajesh");
+		user.setPassword("rajesh");
+		//user.setUserName(userName);
+		existingUsers.put(user.getUserId(),user);
+		
+		
+		user = new User();
+		user.setUserId("gulzar");
+		user.setPassword("gulzar");
+		//user.setUserName(userName);
+		existingUsers.put(user.getUserId(),user);
+		
 		
 		
 		

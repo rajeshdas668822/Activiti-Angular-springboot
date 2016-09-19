@@ -12,7 +12,7 @@
 		<java-version>1.8</java-version>
 		<org.aspectj-version>1.6.10</org.aspectj-version>
 		<jackson.version>1.9.13</jackson.version>
-		<hibernate.validator.version>4.2.0.Final</hibernate.validator.version>
+		<hibernate.version>4.2.0.Final</hibernate.version>
 		<org.spring.security>3.2.0.RELEASE</org.spring.security>
 		<org.springframework-version>4.0.1.RELEASE</org.springframework-version>
 		<org.slf4j-version>1.6.6</org.slf4j-version>
@@ -30,6 +30,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+		<dependency>
+		  <groupId>org.springframework</groupId>
+		  <artifactId>spring-orm</artifactId>
+		  <version>${org.springframework-version}</version>
+	  </dependency>
 		<dependency>
 			<groupId>org.webjars</groupId>
 			<artifactId>angularjs</artifactId>
@@ -116,6 +121,19 @@
 		</dependency>
 
 
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
+
+
+
 		<!-- Testing -->
 
 		<dependency>
@@ -141,6 +159,10 @@
 			<version>1.1</version>
 			<scope>test</scope>
 		</dependency>
+
+
+
+
 
 	</dependencies>
 

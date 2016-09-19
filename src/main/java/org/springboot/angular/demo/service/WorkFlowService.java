@@ -98,14 +98,14 @@ public class WorkFlowService {
 	}
 	
 	
-	public void processFillOrder(Order order) {
+	public void processFillOrder(Order order, String actionType) {
 		List<Task> taskList = taskService.createTaskQuery().executionId(String.valueOf(order.getOrderId())).list();
 		for (Task task : taskList) {
 			System.out.println(" Task Name ::" + task.getName());
 			Map<String, Object> variables = taskService.getVariables(task.getId());
 			variables.put("filledAmount", order.getFillAmount());
-			variables.put("pendingCancelAction","");
-			order.setStatus("Fill");
+			variables.put("pendingCancelAction",actionType);
+			//order.setStatus("Fill");
 			variables.put("order", order);
 			taskService.complete(task.getId(), variables);
 		}
@@ -113,6 +113,18 @@ public class WorkFlowService {
 	}
 	
 
+	
+	public void assignOrder(String userId, Order order) {
+		List<Task> taskList = taskService.createTaskQuery().executionId(String.valueOf(order.getOrderId())).list();
+		for (Task task : taskList) {
+			task.delegate(userId);
+			System.out.println(" Task Name ::" + task.getName());
+			Map<String, Object> variables = taskService.getVariables(task.getId());
+			taskService.complete(task.getId(), variables);
+			
+		}
+	}
+	
 	
 	
 	public void processCancelOrder(Order order, String actionType) {
@@ -137,35 +149,41 @@ public class WorkFlowService {
 
 	}
 
-	public Map<String,List<Order>> loadTask (String userId){
-		   Map<String,List<Order>> taskListMap = new HashMap<String, List<Order>>();
-		   List<Task> taskList = taskService.createTaskQuery().taskCandidateOrAssigned(userId).list();
-		   
-		    /*List<Group> groupList = identityService.createGroupQuery().groupMember(userId).list();
-		    String groupName = groupList!=null && groupList.size()>=1?groupList.get(0).getName():"sales";
-		   if(groupName!=null){
-			   List<Task> grouptaskList = taskService.createTaskQuery().taskCandidateGroup(groupName).list();
-			   if(grouptaskList!=null){
-				   taskList.addAll(grouptaskList);
-			   }
-		   }*/
-		   List<Order> orderList =null;
-		   for(Task task : taskList ){
-			   Map<String, Object> variables = taskService.getVariables(task.getId());
-			   Order order = (Order)variables.get("order");
-			   if(order!=null){
-			   orderList = taskListMap.getOrDefault(task.getName(), new ArrayList<Order>());
-			   orderList.add(order);
-			   taskListMap.putIfAbsent(task.getName(), orderList);
-			   
-			   }
-		   }
-		  System.out.println(taskListMap);
+	public Map<String, List<Order>> loadTask(String userId) {
+		Map<String, List<Order>> taskListMap = new HashMap<String, List<Order>>();
+		List<Task> taskList = taskService.createTaskQuery().taskCandidateOrAssigned(userId).list();
+
+		List<Group> groupList = identityService.createGroupQuery().groupMember(userId).list();
+		
+		if (groupList != null && !groupList.isEmpty()) {
+			for (Group group : groupList) {
+				if (group.getName() != null) {
+					List<Task> grouptaskList = taskService.createTaskQuery().taskCandidateGroup(group.getName()).list();
+					if (grouptaskList != null && !grouptaskList.isEmpty() ) {
+						taskList.addAll(grouptaskList);
+					}
+				}
+			}
+
+		}
+		List<Order> orderList = null;
+		for (Task task : taskList) {
+			Map<String, Object> variables = taskService.getVariables(task.getId());
+			Order order = (Order) variables.get("order");
+			if (order != null) {
+				orderList = taskListMap.getOrDefault(task.getName(), new ArrayList<Order>());
+				orderList.add(order);
+				taskListMap.putIfAbsent(task.getName(), orderList);
+
+			}
+		}
+		System.out.println(taskListMap);
 		return taskListMap;
 	}
-	
+
 	public void logProcessActivity(ProcessInstance processInstance){
 		System.out.println(" Activity ID :" +processInstance.getActivityId());
+		
 		
 	}
 	
